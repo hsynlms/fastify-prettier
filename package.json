@@ -1,0 +1,35 @@
+{
+  "name": "fastify-prettier",
+  "version": "1.0.0",
+  "description": "a simple and lightweight beautifier plugin for Fastify.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node example.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hsynlms/fastify-prettier.git"
+  },
+  "keywords": [
+    "fasitfy",
+    "fastify-plugin",
+    "prettier",
+    "beautify",
+    "prettify",
+    "json"
+  ],
+  "author": "Huseyin ELMAS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hsynlms/fastify-prettier/issues"
+  },
+  "homepage": "https://github.com/hsynlms/fastify-prettier#readme",
+  "dependencies": {
+    "fastify-plugin": "^1.6.1",
+    "prettier": "^2.0.5"
+  },
+  "devDependencies": {
+    "chalk": "^4.1.0",
+    "fastify": "^2.14.1"
+  }
+}
