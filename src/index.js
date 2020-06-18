@@ -79,7 +79,7 @@ function prettierPlugin (fastify, opts, done) {
     }
     
     // done, sent back the new payload
-    done(null, prettifiedPayload);
+    return prettifiedPayload;
 
   });
 
