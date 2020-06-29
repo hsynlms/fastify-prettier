@@ -1,19 +1,16 @@
 // get required node modules
-const fastify = require('fastify')();
-const fastifyPrettier = require('./src/index');
-const chalk = require('chalk');
+const fastify = require('fastify')()
+const fastifyPrettier = require('./src/index')
+const chalk = require('chalk')
 
 // defaults
-const defaults = {
-  port: 3000
-};
+const defaults = { port: 3000 }
 
 // register the plugin
-fastify.register(fastifyPrettier);
+fastify.register(fastifyPrettier)
 
 // register test route
 fastify.get('/', (request, reply) => {
-
   // create an object
   const obj = {
     blackLivesMatter: true,
@@ -24,15 +21,14 @@ fastify.get('/', (request, reply) => {
       rdr2: 'completed',
       gtfo: 'continues'
     }
-  };
+  }
 
   // set return type
-  reply.type('application/json');
-  
-  // return the object
-  reply.send(obj);
+  reply.type('application/json')
 
-});
+  // return the object
+  reply.send(obj)
+})
 
 // initialize the fastify server
 fastify.listen(defaults.port, () => {
@@ -41,4 +37,4 @@ fastify.listen(defaults.port, () => {
       chalk.black(`Fastify server is running on port: ${defaults.port}`)
     )
   )
-});
+})
