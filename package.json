@@ -4,7 +4,9 @@
   "description": "a simple and lightweight beautifier plugin for Fastify.",
   "main": "src/index.js",
   "scripts": {
-    "test": "node example.js"
+    "test": "node example.js",
+    "lint": "npm run lint:standard",
+    "lint:standard": "standard --verbose | snazzy || exit 0"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,8 @@
   },
   "devDependencies": {
     "chalk": "^4.1.0",
-    "fastify": "^2.15.1"
+    "fastify": "^2.15.1",
+    "snazzy": "^8.0.0",
+    "standard": "^14.3.4"
   }
 }
