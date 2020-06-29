@@ -30,6 +30,6 @@
   },
   "devDependencies": {
     "chalk": "^4.1.0",
-    "fastify": "^2.14.1"
+    "fastify": "^2.15.1"
   }
 }
