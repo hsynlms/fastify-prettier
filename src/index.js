@@ -24,7 +24,7 @@ function prettierPlugin (fastify, opts, done) {
   const options = Object.assign({}, defaults, opts)
 
   // amazer :)
-  const amazeMe = async (content, parser) => {
+  const amazeMe = (content, parser) => {
     // declaration of stringified content
     let strContent = ''
 
@@ -38,12 +38,10 @@ function prettierPlugin (fastify, opts, done) {
     }
 
     // return amazed result
-    return await Promise.resolve(
-      prettier.format(strContent, {
-        tabWidth: options.spaces,
-        parser: parser || options.parser
-      })
-    )
+    prettier.format(strContent, {
+      tabWidth: options.spaces,
+      parser: parser || options.parser
+    })
   }
 
   // register the amazer as a decorator as well
@@ -60,7 +58,7 @@ function prettierPlugin (fastify, opts, done) {
         (options.query && request.query[options.query.name] == options.query.value)) {
       try {
         // format the payload
-        prettifiedPayload = await amazeMe(prettifiedPayload)
+        prettifiedPayload = amazeMe(prettifiedPayload)
       } catch (err) {
         // something bad happened
         if (options.fallbackOnError === false) {
