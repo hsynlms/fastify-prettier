@@ -29,6 +29,7 @@
   "homepage": "https://github.com/hsynlms/fastify-prettier#readme",
   "dependencies": {
     "fastify-plugin": "^1.6.1",
+    "is-stream": "^2.0.0",
     "prettier": "^2.0.5"
   },
   "devDependencies": {
