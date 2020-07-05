@@ -3,6 +3,7 @@
 // get required modules
 const fastifyPlugin = require('fastify-plugin')
 const prettier = require('prettier')
+const isStream = require('is-stream')
 const pkg = require('../package.json')
 
 // options defaults
@@ -55,6 +56,10 @@ function prettierPlugin (fastify, opts, done) {
   // if its enabled in options
   if (options.enableOnSendHook === true) {
     fastify.addHook('onSend', async (req, reply, payload, done) => {
+      // if the payload which is being sent is a stream
+      // return the original payload
+      if (isStream(payload)) return payload
+
       // new payload variable declaration
       // set current payload as fallback
       let prettifiedPayload = payload
