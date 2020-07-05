@@ -14,6 +14,7 @@ const defaults = {
   },
   alwaysOn: false,
   fallbackOnError: true,
+  overrideContentLength: true,
   prettierOpts: {
     tabWidth: 2,
     parser: 'json-stringify'
@@ -55,6 +56,7 @@ function prettierPlugin (fastify, opts, done) {
     // set current payload as fallback
     let prettifiedPayload = payload
 
+    // check options
     if (options.alwaysOn === true ||
         // eslint-disable-next-line
         (options.query && request.query[options.query.name] == options.query.value)) {
@@ -68,6 +70,12 @@ function prettierPlugin (fastify, opts, done) {
           throw Error(`${pkg.name} run into an unexpected error: ${err.message}`)
         }
       }
+    }
+
+    // reset content-length header with new payload length
+    // if its enabled in options
+    if (options.overrideContentLength === true) {
+      reply.header('content-length', prettifiedPayload.length)
     }
 
     // done, sent back the new payload
