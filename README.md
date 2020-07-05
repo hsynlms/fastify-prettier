@@ -15,6 +15,7 @@
 | fallbackOnError         | boolean            | true                                | If something bad happens while beautifying, fallback/send previous response/payload. If its `false`, error will be thrown                                      |
 | overrideContentLength  | boolean            | true                               | Re-calculate `content-length` header for new beautified response/payload                         |
 | query          | object              | `{ name: 'pretty', value: 'true' }` | Request query parameter that triggers the plugin for the beautified response. It works when `alwaysOn` is disabled |
+| enableOnSendHook          | boolean              | true | Allow the plugin to get injected into fastify `onSend` hook to beautify outgoing responses |
 | prettierOpts          | object              | `{ tabWidth: 2, parser: 'json-stringify' }` | Prettier plugin options. Please take a look prettier [official documentation](https://prettier.io/docs/en/options.html) for more information |
 
 ## Decorator
