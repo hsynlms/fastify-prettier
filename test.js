@@ -35,7 +35,7 @@ test('prettify empty response', done => {
     // eslint-disable-next-line
     (err, res) => {
       // eslint-disable-next-line
-      expect(res.payload).toBe('')
+      expect(res.payload).toEqual('')
       done()
 
       // close fastify server
@@ -82,7 +82,7 @@ test('prettify json response', done => {
 })
 
 // eslint-disable-next-line
-test('prettify html response', done => {
+test('prettify html response (by using decorator)', done => {
   // initialize a fastify server
   const fastify = generateServer()
 
