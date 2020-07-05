@@ -1,3 +1,5 @@
+'use strict'
+
 // get required node modules
 const fastify = require('fastify')()
 const fastifyPrettier = require('./src/index')
