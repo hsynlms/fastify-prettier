@@ -3,6 +3,7 @@
 // get required node modules
 const Fastify = require('fastify')
 const fastifyPrettier = require('./src/index')
+const fs = require('fs')
 const xml2js = require('xml2js')
 
 // fastify server generator
@@ -104,6 +105,75 @@ test('prettify json response', done => {
 
       // close fastify server
       fastify.close()
+    }
+  )
+})
+
+// eslint-disable-next-line
+test('buffer response returned as it is', done => {
+  // initialize a fastify server
+  const fastify = generateServer()
+
+  // define a route
+  fastify.get('/', (req, reply) => {
+    // send file buffer response
+    fs.readFile('test.json', (err, fileBuffer) => {
+      reply.send(err || fileBuffer)
+    })
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/' },
+    // eslint-disable-next-line
+    (err1, res1) => {
+      fastify.inject(
+        { method: 'GET', url: '/?pretty=true' },
+        // eslint-disable-next-line
+        (err2, res2) => {
+          // eslint-disable-next-line
+          expect(res2.payload).toBe(res1.payload)
+          done()
+
+          // close fastify server
+          fastify.close()
+        }
+      )
+    }
+  )
+})
+
+// eslint-disable-next-line
+test('stream response returned as it is', done => {
+  // initialize a fastify server
+  const fastify = generateServer()
+
+  // define a route
+  fastify.get('/', (req, reply) => {
+    // create test file read stream
+    const stream = fs.createReadStream('test.json', 'utf8')
+
+    // send stream response
+    reply.send(stream)
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/' },
+    // eslint-disable-next-line
+    (err1, res1) => {
+      fastify.inject(
+        { method: 'GET', url: '/?pretty=true' },
+        // eslint-disable-next-line
+        (err2, res2) => {
+          // eslint-disable-next-line
+          expect(res2.payload).toBe(res1.payload)
+          done()
+
+          // close fastify server
+          fastify.close()
+        }
+      )
     }
   )
 })
