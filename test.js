@@ -210,7 +210,7 @@ test('non-prettified response', done => {
 })
 
 // eslint-disable-next-line
-test('alwaysOn option of the plugin', done => {
+test('alwaysOn option of the plugin active', done => {
   // initialize a fastify server
   const fastify = generateServer({ alwaysOn: true })
 
@@ -247,7 +247,44 @@ test('alwaysOn option of the plugin', done => {
 })
 
 // eslint-disable-next-line
-test('query option of the plugin', done => {
+test('alwaysOn option of the plugin passive', done => {
+  // initialize a fastify server
+  const fastify = generateServer({ alwaysOn: false })
+
+  // define a route
+  fastify.get('/', (req, reply) => {
+    // variable definition
+    const obj = {
+      test: true,
+      format: 'json'
+    }
+
+    // set return type
+    reply.type('application/json')
+
+    // send response
+    reply.send(obj)
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/' },
+    // eslint-disable-next-line
+    (err, res) => {
+      // eslint-disable-next-line
+      expect(
+        !(/\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload))
+      ).toEqual(true)
+      done()
+
+      // close fastify server
+      fastify.close()
+    }
+  )
+})
+
+// eslint-disable-next-line
+test('query option of the plugin active', done => {
   // initialize a fastify server
   const fastify = generateServer(
     {
@@ -286,6 +323,135 @@ test('query option of the plugin', done => {
 
       // close fastify server
       fastify.close()
+    }
+  )
+})
+
+// eslint-disable-next-line
+test('query option of the plugin passive', done => {
+  // initialize a fastify server
+  const fastify = generateServer(
+    { query: false }
+  )
+
+  // define a route
+  fastify.get('/', (req, reply) => {
+    // variable definition
+    const obj = {
+      test: true,
+      format: 'json'
+    }
+
+    // set return type
+    reply.type('application/json')
+
+    // send response
+    reply.send(obj)
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/?pretty=true' },
+    // eslint-disable-next-line
+    (err, res) => {
+      // eslint-disable-next-line
+      expect(
+        !(/\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload))
+      ).toEqual(true)
+      done()
+
+      // close fastify server
+      fastify.close()
+    }
+  )
+})
+
+// eslint-disable-next-line
+test('overrideContentLength option of the plugin active', done => {
+  // initialize a fastify server
+  const fastify = generateServer(
+    { overrideContentLength: true }
+  )
+
+  // define a route
+  fastify.get('/', async (req, reply) => {
+    // variable definition
+    const obj = {
+      test: true,
+      format: 'json'
+    }
+
+    // set return type
+    reply.type('application/json')
+
+    // send response by throwing an error in async handler
+    reply.send(obj.exception.throw())
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/' },
+    // eslint-disable-next-line
+    (err1, res1) => {
+      fastify.inject(
+        { method: 'GET', url: '/?pretty=true' },
+        // eslint-disable-next-line
+        (err2, res2) => {
+          // eslint-disable-next-line
+          expect(
+            res2.headers['content-length'] - res1.headers['content-length'] === 14
+          ).toEqual(true)
+          done()
+
+          // close fastify server
+          fastify.close()
+        }
+      )
+    }
+  )
+})
+
+// eslint-disable-next-line
+test('overrideContentLength option of the plugin passive', done => {
+  // initialize a fastify server
+  const fastify = generateServer(
+    { overrideContentLength: false }
+  )
+
+  // define a route
+  fastify.get('/', async (req, reply) => {
+    // variable definition
+    const obj = {
+      test: true,
+      format: 'json'
+    }
+
+    // set return type
+    reply.type('application/json')
+
+    // send response by throwing an error in async handler
+    reply.send(obj.exception.throw())
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/' },
+    // eslint-disable-next-line
+    (err1, res1) => {
+      fastify.inject(
+        { method: 'GET', url: '/?pretty=true' },
+        // eslint-disable-next-line
+        (err2, res2) => {
+          // eslint-disable-next-line
+          expect(
+            res2.headers['content-length'] === res1.headers['content-length']
+          ).toEqual(true)
+          done()
+
+          // close fastify server
+          fastify.close()
+        }
+      )
     }
   )
 })
