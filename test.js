@@ -245,3 +245,47 @@ test('alwaysOn option of the plugin', done => {
     }
   )
 })
+
+// eslint-disable-next-line
+test('query option of the plugin', done => {
+  // initialize a fastify server
+  const fastify = generateServer(
+    {
+      query: {
+        name: 'beautify',
+        value: 'yes'
+      }
+    }
+  )
+
+  // define a route
+  fastify.get('/', (req, reply) => {
+    // variable definition
+    const obj = {
+      test: true,
+      format: 'json'
+    }
+
+    // set return type
+    reply.type('application/json')
+
+    // send response
+    reply.send(obj)
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/?beautify=yes' },
+    // eslint-disable-next-line
+    (err, res) => {
+      // eslint-disable-next-line
+      expect(
+        /\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload)
+      ).toEqual(true)
+      done()
+
+      // close fastify server
+      fastify.close()
+    }
+  )
+})
