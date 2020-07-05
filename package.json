@@ -1,6 +1,6 @@
 {
   "name": "fastify-prettier",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "a simple and lightweight beautifier plugin for Fastify.",
   "main": "src/index.js",
   "scripts": {
