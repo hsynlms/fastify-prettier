@@ -10,7 +10,7 @@ const defaults = { port: 3000 }
 fastify.register(fastifyPrettier)
 
 // register test route
-fastify.get('/', (request, reply) => {
+fastify.get('/', (req, reply) => {
   // create an object
   const obj = {
     blackLivesMatter: true,
