@@ -36,7 +36,7 @@ test('prettify empty response', done => {
     // eslint-disable-next-line
     (err, res) => {
       // eslint-disable-next-line
-      expect(res.payload).toEqual('')
+      expect(res.payload).toBe('')
       done()
 
       // close fastify server
@@ -62,7 +62,7 @@ test('prettify empty string response', done => {
     // eslint-disable-next-line
     (err, res) => {
       // eslint-disable-next-line
-      expect(res.payload).toEqual('')
+      expect(res.payload).toBe('')
       done()
 
       // close fastify server
@@ -99,7 +99,7 @@ test('prettify json response', done => {
       // eslint-disable-next-line
       expect(
         /\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload)
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -143,7 +143,7 @@ test('prettify html response (by using decorator)', done => {
       // eslint-disable-next-line
       expect(
         /<root>\n\s\s<test>true<\/test>\n\s\s<format>html<\/format>\n<\/root>/gi.test(res.payload)
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -165,7 +165,7 @@ test('prettify error response', done => {
       // eslint-disable-next-line
       expect(
         /\{\n\s\s"message":\s"Route GET:\/error\?pretty=true\snot\sfound",\n\s\s"error":\s"Not\sFound",\n\s\s"statusCode":\s404\n\}/gi.test(res.payload)
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -200,7 +200,7 @@ test('non-prettified response', done => {
     // eslint-disable-next-line
     (err, res) => {
       // eslint-disable-next-line
-      expect(res.payload).toEqual('{"test":true,"format":"json"}')
+      expect(res.payload).toBe('{"test":true,"format":"json"}')
       done()
 
       // close fastify server
@@ -237,7 +237,7 @@ test('alwaysOn option of the plugin active', done => {
       // eslint-disable-next-line
       expect(
         /\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload)
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -274,7 +274,7 @@ test('alwaysOn option of the plugin passive', done => {
       // eslint-disable-next-line
       expect(
         !(/\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload))
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -318,7 +318,7 @@ test('query option of the plugin active', done => {
       // eslint-disable-next-line
       expect(
         /\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload)
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -357,7 +357,7 @@ test('query option of the plugin passive', done => {
       // eslint-disable-next-line
       expect(
         !(/\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload))
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
@@ -400,7 +400,7 @@ test('overrideContentLength option of the plugin active', done => {
           // eslint-disable-next-line
           expect(
             res2.headers['content-length'] - res1.headers['content-length'] === 14
-          ).toEqual(true)
+          ).toBe(true)
           done()
 
           // close fastify server
@@ -445,7 +445,7 @@ test('overrideContentLength option of the plugin passive', done => {
           // eslint-disable-next-line
           expect(
             res2.headers['content-length'] === res1.headers['content-length']
-          ).toEqual(true)
+          ).toBe(true)
           done()
 
           // close fastify server
@@ -486,7 +486,7 @@ test('enableOnSendHook option of the plugin active', done => {
       // eslint-disable-next-line
       expect(
         /\{\n\s\s"test":\strue,\n\s\s"format":\s"json"\n\}/gi.test(res.payload)
-      ).toEqual(true)
+      ).toBe(true)
       done()
 
       // close fastify server
