@@ -51,7 +51,7 @@ function prettierPlugin (fastify, opts, done) {
   fastify.decorate(options.decorator, amazeMe)
 
   // get injected into 'onSend' hook to be able to beautify the payload
-  fastify.addHook('onSend', async (request, reply, payload, done) => {
+  fastify.addHook('onSend', async (req, reply, payload, done) => {
     // new payload variable declaration
     // set current payload as fallback
     let prettifiedPayload = payload
@@ -59,7 +59,7 @@ function prettierPlugin (fastify, opts, done) {
     // check options
     if (options.alwaysOn === true ||
         // eslint-disable-next-line
-        (options.query && request.query[options.query.name] == options.query.value)) {
+        (options.query && req.query[options.query.name] == options.query.value)) {
       try {
         // format the payload
         prettifiedPayload = amazeMe(prettifiedPayload)
@@ -74,7 +74,7 @@ function prettierPlugin (fastify, opts, done) {
 
     // reset content-length header with new payload length
     // if its enabled in options
-    if (options.overrideContentLength === true) {
+    if (prettifiedPayload && options.overrideContentLength === true) {
       reply.header('content-length', prettifiedPayload.length)
     }
 
@@ -90,7 +90,7 @@ function prettierPlugin (fastify, opts, done) {
 module.exports = fastifyPlugin(
   prettierPlugin,
   {
-    fastify: '2.x',
+    fastify: '>=2.x',
     name: pkg.name
   }
 )
