@@ -56,9 +56,9 @@ function prettierPlugin (fastify, opts, done) {
   // if its enabled in options
   if (options.enableOnSendHook === true) {
     fastify.addHook('onSend', async (req, reply, payload, done) => {
-      // if the payload which is being sent is a stream
+      // if the payload which is being sent is a stream or a buffer
       // return the original payload
-      if (isStream(payload)) return payload
+      if (isStream(payload) || Buffer.isBuffer(payload)) return payload
 
       // new payload variable declaration
       // set current payload as fallback
