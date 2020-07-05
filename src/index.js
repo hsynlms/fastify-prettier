@@ -8,14 +8,16 @@ const pkg = require('../package.json')
 // options defaults
 const defaults = {
   decorator: 'prettier',
-  parser: 'json-stringify',
   query: {
     name: 'pretty',
     value: 'true'
   },
   alwaysOn: false,
-  spaces: 2,
-  fallbackOnError: true
+  fallbackOnError: true,
+  prettierOpts: {
+    tabWidth: 2,
+    parser: 'json-stringify'
+  }
 }
 
 // declaration of prettier plugin for fastify
@@ -24,7 +26,7 @@ function prettierPlugin (fastify, opts, done) {
   const options = Object.assign({}, defaults, opts)
 
   // amazer :)
-  const amazeMe = (content, parser) => {
+  const amazeMe = (content, opts) => {
     // declaration of stringified content
     let strContent = ''
 
@@ -38,10 +40,10 @@ function prettierPlugin (fastify, opts, done) {
     }
 
     // return amazed result
-    prettier.format(strContent, {
-      tabWidth: options.spaces,
-      parser: parser || options.parser
-    })
+    return prettier.format(
+      strContent,
+      Object.assign({}, defaults.prettierOpts, opts)
+    )
   }
 
   // register the amazer as a decorator as well
