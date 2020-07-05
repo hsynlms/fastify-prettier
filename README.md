@@ -17,7 +17,19 @@
 | query          | object              | `{ name: 'pretty', value: 'true' }` | Request query parameter that triggers the plugin for the beautified response. It works when `alwaysOn` is disabled |
 | prettierOpts          | object              | `{ tabWidth: 2, parser: 'json-stringify' }` | Prettier plugin options. Please take a look prettier [official documentation](https://prettier.io/docs/en/options.html) for more information |
 
+## Decorator
 
+Feel free to use `prettier` decorator which beautifies the given content through given prettier options whenever you need in anywhere in the fastify server.
+
+```js
+// example of using prettier decorator
+const response = fastify.prettier(
+  // content type can be: boolean, number, object, array, string
+  content,
+  // prettier options (please see: prettierOpts)
+  { parser: 'html', htmlWhitespaceSensitivity: 'ignore' }
+)
+```
 
 
 ## Examples
