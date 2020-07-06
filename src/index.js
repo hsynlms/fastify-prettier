@@ -45,7 +45,7 @@ function prettierPlugin (fastify, opts, done) {
     // return amazed result
     return prettier.format(
       strContent,
-      Object.assign({}, defaults.prettierOpts, opts)
+      Object.assign({}, options.prettierOpts, opts)
     )
   }
 
