@@ -179,6 +179,51 @@ test('stream response returned as it is', done => {
 })
 
 // eslint-disable-next-line
+test('prettify html response', done => {
+  // initialize a fastify server
+  const fastify = generateServer({
+    prettierOpts: {
+      parser: 'html',
+      htmlWhitespaceSensitivity: 'ignore'
+    }
+  })
+
+  // define a route
+  fastify.get('/', (req, reply) => {
+    // variable definition
+    const obj = {
+      test: true,
+      format: 'html'
+    }
+
+    // generate xml
+    const response = (new xml2js.Builder({ headless: true, renderOpts: false })).buildObject(obj)
+
+    // set return type
+    reply.type('text/html')
+
+    // send response
+    reply.send(response)
+  })
+
+  // test
+  fastify.inject(
+    { method: 'GET', url: '/?pretty=true' },
+    // eslint-disable-next-line
+    (err, res) => {
+      // eslint-disable-next-line
+      expect(
+        /<root>\n\s\s<test>true<\/test>\n\s\s<format>html<\/format>\n<\/root>/gi.test(res.payload)
+      ).toBe(true)
+      done()
+
+      // close fastify server
+      fastify.close()
+    }
+  )
+})
+
+// eslint-disable-next-line
 test('prettify html response (by using decorator)', done => {
   // initialize a fastify server
   const fastify = generateServer()
