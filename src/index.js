@@ -64,6 +64,9 @@ function prettierPlugin (fastify, opts, done) {
       // set current payload as fallback
       let prettifiedPayload = payload
 
+      // indicates if the body is prettified or not
+      let isPrettified = false
+
       // check options
       if (options.alwaysOn === true ||
           // eslint-disable-next-line
@@ -71,6 +74,9 @@ function prettierPlugin (fastify, opts, done) {
         try {
           // format the payload
           prettifiedPayload = amazeMe(prettifiedPayload)
+
+          // successfully prettified
+          isPrettified = true
         } catch (err) {
           // something bad happened
           if (options.fallbackOnError === false) {
@@ -82,7 +88,9 @@ function prettierPlugin (fastify, opts, done) {
 
       // reset content-length header with new payload length
       // if its enabled in options
-      if (prettifiedPayload && options.overrideContentLength === true) {
+      if (isPrettified &&
+          prettifiedPayload &&
+          options.overrideContentLength === true) {
         reply.header('content-length', prettifiedPayload.length)
       }
 
