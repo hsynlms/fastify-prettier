@@ -534,7 +534,7 @@ test('enableOnSendHook option of the plugin active', done => {
   )
 
   // define a route
-  fastify.get('/', async (req, reply) => {
+  fastify.get('/', (req, reply) => {
     // variable definition
     const obj = {
       test: true,
@@ -573,7 +573,7 @@ test('enableOnSendHook option of the plugin passive', done => {
   )
 
   // define a route
-  fastify.get('/', async (req, reply) => {
+  fastify.get('/', (req, reply) => {
     // variable definition
     const obj = {
       test: true,
