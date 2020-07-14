@@ -28,13 +28,13 @@
   },
   "homepage": "https://github.com/hsynlms/fastify-prettier#readme",
   "dependencies": {
-    "fastify-plugin": "^1.6.1",
+    "fastify-plugin": "^2.0.1",
     "is-stream": "^2.0.0",
     "prettier": "^2.0.5"
   },
   "devDependencies": {
     "chalk": "^4.1.0",
-    "fastify": "^2.15.1",
+    "fastify": "^3.0.2",
     "jest": "^26.1.0",
     "snazzy": "^8.0.0",
     "standard": "^14.3.4",
