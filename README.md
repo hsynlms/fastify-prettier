@@ -8,6 +8,7 @@
 `fastify-prettier` uses `onSend` fastify hook to beautify the response/payload before it gets sent.
 
 **Note:** `streams` and `buffers` are excluded for beautification by default.
+
 **Note:** `fastify v3` compatibility shipped with v1.1.5
 
 ## Options
