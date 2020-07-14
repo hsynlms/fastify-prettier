@@ -55,7 +55,7 @@ function prettierPlugin (fastify, opts, done) {
   // get injected into 'onSend' hook to be able to beautify the payload
   // if its enabled in options
   if (options.enableOnSendHook === true) {
-    fastify.addHook('onSend', async (req, reply, payload, done) => {
+    fastify.addHook('onSend', async (req, reply, payload) => {
       // if the payload which is being sent is a stream or a buffer
       // return the original payload
       if (isStream(payload) || Buffer.isBuffer(payload)) return payload
@@ -107,7 +107,7 @@ function prettierPlugin (fastify, opts, done) {
 module.exports = fastifyPlugin(
   prettierPlugin,
   {
-    fastify: '>=2.x',
+    fastify: '3.x',
     name: pkg.name
   }
 )
