@@ -6,7 +6,7 @@ const prettier = require('prettier')
 const isStream = require('is-stream')
 const pkg = require('../package.json')
 
-// options defaults
+// plugin defaults
 const defaults = {
   decorator: 'prettier',
   query: {
