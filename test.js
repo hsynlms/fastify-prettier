@@ -7,12 +7,12 @@ const fs = require('fs')
 const xml2js = require('xml2js')
 
 // fastify server generator
-const generateServer = (pluginOpts) => {
+const generateServer = async pluginOpts => {
   // initialize fastify server
   const fastify = new Fastify()
 
   // register the plugin
-  fastify.register(fastifyPrettier, pluginOpts)
+  await fastify.register(fastifyPrettier, pluginOpts)
 
   // return the instance
   return fastify
@@ -21,9 +21,9 @@ const generateServer = (pluginOpts) => {
 // test cases
 
 // eslint-disable-next-line
-test('prettify empty response', done => {
+test('prettify empty response', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -47,9 +47,9 @@ test('prettify empty response', done => {
 })
 
 // eslint-disable-next-line
-test('prettify empty string response', done => {
+test('prettify empty string response', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -73,9 +73,9 @@ test('prettify empty string response', done => {
 })
 
 // eslint-disable-next-line
-test('prettify json response', done => {
+test('prettify json response', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -110,9 +110,9 @@ test('prettify json response', done => {
 })
 
 // eslint-disable-next-line
-test('buffer response returned as it is', done => {
+test('buffer response returned as it is', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -144,9 +144,9 @@ test('buffer response returned as it is', done => {
 })
 
 // eslint-disable-next-line
-test('stream response returned as it is', done => {
+test('stream response returned as it is', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -179,9 +179,9 @@ test('stream response returned as it is', done => {
 })
 
 // eslint-disable-next-line
-test('prettify html response', done => {
+test('prettify html response', async done => {
   // initialize a fastify server
-  const fastify = generateServer({
+  const fastify = await generateServer({
     prettierOpts: {
       parser: 'html',
       htmlWhitespaceSensitivity: 'ignore'
@@ -224,9 +224,9 @@ test('prettify html response', done => {
 })
 
 // eslint-disable-next-line
-test('prettify html response (by using decorator)', done => {
+test('prettify html response (by using decorator)', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -268,9 +268,9 @@ test('prettify html response (by using decorator)', done => {
 })
 
 // eslint-disable-next-line
-test('prettify error response', done => {
+test('prettify error response', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // test
   fastify.inject(
@@ -290,9 +290,9 @@ test('prettify error response', done => {
 })
 
 // eslint-disable-next-line
-test('non-prettified response', done => {
+test('non-prettified response', async done => {
   // initialize a fastify server
-  const fastify = generateServer()
+  const fastify = await generateServer()
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -325,9 +325,9 @@ test('non-prettified response', done => {
 })
 
 // eslint-disable-next-line
-test('alwaysOn option of the plugin active', done => {
+test('alwaysOn option of the plugin active', async done => {
   // initialize a fastify server
-  const fastify = generateServer({ alwaysOn: true })
+  const fastify = await generateServer({ alwaysOn: true })
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -362,9 +362,9 @@ test('alwaysOn option of the plugin active', done => {
 })
 
 // eslint-disable-next-line
-test('alwaysOn option of the plugin passive', done => {
+test('alwaysOn option of the plugin passive', async done => {
   // initialize a fastify server
-  const fastify = generateServer({ alwaysOn: false })
+  const fastify = await generateServer({ alwaysOn: false })
 
   // define a route
   fastify.get('/', (req, reply) => {
@@ -399,9 +399,9 @@ test('alwaysOn option of the plugin passive', done => {
 })
 
 // eslint-disable-next-line
-test('query option of the plugin active', done => {
+test('query option of the plugin active', async done => {
   // initialize a fastify server
-  const fastify = generateServer(
+  const fastify = await generateServer(
     {
       query: {
         name: 'beautify',
@@ -443,9 +443,9 @@ test('query option of the plugin active', done => {
 })
 
 // eslint-disable-next-line
-test('query option of the plugin passive', done => {
+test('query option of the plugin passive', async done => {
   // initialize a fastify server
-  const fastify = generateServer(
+  const fastify = await generateServer(
     { query: false }
   )
 
@@ -482,9 +482,9 @@ test('query option of the plugin passive', done => {
 })
 
 // eslint-disable-next-line
-test('overrideContentLength option of the plugin active', done => {
+test('overrideContentLength option of the plugin active', async done => {
   // initialize a fastify server
-  const fastify = generateServer(
+  const fastify = await generateServer(
     { overrideContentLength: true }
   )
 
@@ -527,9 +527,9 @@ test('overrideContentLength option of the plugin active', done => {
 })
 
 // eslint-disable-next-line
-test('overrideContentLength option of the plugin passive', done => {
+test('overrideContentLength option of the plugin passive', async done => {
   // initialize a fastify server
-  const fastify = generateServer(
+  const fastify = await generateServer(
     { overrideContentLength: false }
   )
 
@@ -572,9 +572,9 @@ test('overrideContentLength option of the plugin passive', done => {
 })
 
 // eslint-disable-next-line
-test('enableOnSendHook option of the plugin active', done => {
+test('enableOnSendHook option of the plugin active', async done => {
   // initialize a fastify server
-  const fastify = generateServer(
+  const fastify = await generateServer(
     { enableOnSendHook: true }
   )
 
@@ -611,9 +611,9 @@ test('enableOnSendHook option of the plugin active', done => {
 })
 
 // eslint-disable-next-line
-test('enableOnSendHook option of the plugin passive', done => {
+test('enableOnSendHook option of the plugin passive', async done => {
   // initialize a fastify server
-  const fastify = generateServer(
+  const fastify = await generateServer(
     { enableOnSendHook: false }
   )
 
