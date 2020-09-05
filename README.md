@@ -3,11 +3,11 @@
 
 [![NPM](https://nodei.co/npm/fastify-prettier.png)](https://nodei.co/npm/fastify-prettier/)
 
-`fastify-prettier` has support of beautifying responses via query parameter by default to make responses more readable for developers/humans. `prettier` decorator can also be used anywhere in the fastify server as beautifier. The plugin itself uses [prettier](https://github.com/prettier/prettier) under the hood and is capable of parsing/formatting anything that prettier can.
+`fastify-prettier` has support of beautifying payloads via query parameter to make responses more readable for developers/humans. Decorator`prettier` can also be used anywhere in the fastify server as the content beautifier. The plugin itself uses [prettier](https://github.com/prettier/prettier) under the hood and is capable of parsing/formatting anything that prettier can.
 
-`fastify-prettier` uses `onSend` fastify hook to beautify the response/payload before it gets sent.
+`fastify-prettier` uses `onSend` fastify hook to beautify the response payload before it gets sent.
 
-**Note:** `streams` and `buffers` are excluded for beautification by default.
+**Note:** `streams` and `buffers` are excluded in beautification process.
 
 **Note:** `fastify v3` compatibility shipped with v1.1.5
 
@@ -15,16 +15,16 @@
 
 | Name              | Type               | Default                             | Description                                                                                                          |
 | ---               | ---                | ---                                 | ---                                                                                                                  |
-| alwaysOn         | boolean | false                                | To make all responses beautified automatically in anyway                                                 |
-| fallbackOnError         | boolean            | true                                | If something bad happens while beautifying, fallback/send previous response/payload. If its `false`, error will be thrown                                      |
-| overrideContentLength  | boolean            | true                               | Re-calculate `content-length` header for new beautified response/payload                         |
-| query          | object              | `{ name: 'pretty', value: 'true' }` | Request query parameter that triggers the plugin for the beautified response. It works when `alwaysOn` is disabled |
+| alwaysOn         | boolean | false                                | To make all the payloads beautified in anyway                                                 |
+| fallbackOnError         | boolean            | true                                | If something bad happens, send the original payload. If its `false`, an error will be thrown                                      |
+| overrideContentLength  | boolean            | true                               | Re-calculate `content-length` header for the beautified response                         |
+| query          | object              | `{ name: 'pretty', value: 'true' }` | The query parameter that triggers the plugin to beautify the outgoing payload |
 | enableOnSendHook          | boolean              | true | Allow the plugin to get injected into fastify `onSend` hook to beautify outgoing responses. The prettier decorator can still be used even if that option is disabled |
-| prettierOpts          | object              | `{ tabWidth: 2, parser: 'json-stringify' }` | Prettier plugin options. Please take a look prettier [official documentation](https://prettier.io/docs/en/options.html) for more information |
+| prettierOpts          | object              | `{ tabWidth: 2, parser: 'json-stringify' }` | Please take a look prettier [official documentation](https://prettier.io/docs/en/options.html) for more information |
 
 ## Decorator
 
-Feel free to use `prettier` decorator which beautifies the given content through given prettier options whenever you need in anywhere in the fastify server.
+Feel free to use `prettier` decorator which beautifies the given content through the provided options whenever you need.
 
 ```js
 // example of using prettier decorator
@@ -88,7 +88,7 @@ fastify.listen(3000, () => {
 */
 ```
 
-You are allowed to change query parameter name and value as you desire.
+You are allowed to change the query parameter option.
 
 ```js
 // register fastify-prettier plugin
@@ -118,7 +118,7 @@ fastify.register(
 */
 ```
 
-You can enable beautifier for all outgoing responses regardless query parameter when the plugin is registered in fastify.
+You can enable beautification for all outgoing payloads regardless the query parameter.
 
 ```js
 // register fastify-prettier plugin
