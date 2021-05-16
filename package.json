@@ -30,7 +30,7 @@
   "dependencies": {
     "fastify-plugin": "^3.0.0",
     "is-stream": "^2.0.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.3.0"
   },
   "devDependencies": {
     "chalk": "^4.1.1",
