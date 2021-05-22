@@ -21,10 +21,9 @@ const defaults = { port: 3000 }
       }
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.listen(defaults.port, () => {

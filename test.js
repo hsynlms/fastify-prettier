@@ -67,10 +67,9 @@ test('prettify json response', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -160,13 +159,12 @@ test('prettify html response', async done => {
       format: 'html'
     }
 
-    // generate xml
-    const response = (new xml2js.Builder({ headless: true, renderOpts: false })).buildObject(obj)
+    const response =
+      (new xml2js.Builder({ headless: true, renderOpts: false })).buildObject(obj)
 
-    // set return type
-    reply.type('text/html')
-
-    reply.send(response)
+    reply
+      .type('text/html')
+      .send(response)
   })
 
   fastify.inject(
@@ -199,10 +197,9 @@ test('prettify html response (by using decorator)', async done => {
       { parser: 'html', htmlWhitespaceSensitivity: 'ignore' }
     )
 
-    // set return type
-    reply.type('text/html')
-
-    reply.send(response)
+    reply
+      .type('text/html')
+      .send(response)
   })
 
   fastify.inject(
@@ -249,10 +246,9 @@ test('non-prettified response', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -278,10 +274,9 @@ test('alwaysOn option of the plugin active', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -309,10 +304,9 @@ test('alwaysOn option of the plugin passive', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -347,10 +341,9 @@ test('query option of the plugin active', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -380,10 +373,9 @@ test('query option of the plugin passive', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -414,10 +406,9 @@ test('overrideContentLength option of the plugin active', async done => {
     }
 
     // throw an error in async handler
-    reply.type('application/json')
-
-    // send response by throwing an error in async handler
-    reply.send(obj.exception.throw())
+    reply
+      .type('application/json')
+      .send(obj.exception.throw())
   })
 
   fastify.inject(
@@ -454,10 +445,9 @@ test('overrideContentLength option of the plugin passive', async done => {
     }
 
     // throw an error in async handler
-    reply.type('application/json')
-
-    // send response by throwing an error in async handler
-    reply.send(obj.exception.throw())
+    reply
+      .type('application/json')
+      .send(obj.exception.throw())
   })
 
   fastify.inject(
@@ -493,10 +483,9 @@ test('enableOnSendHook option of the plugin active', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
@@ -526,10 +515,9 @@ test('enableOnSendHook option of the plugin passive', async done => {
       format: 'json'
     }
 
-    // set return type
-    reply.type('application/json')
-
-    reply.send(obj)
+    reply
+      .type('application/json')
+      .send(obj)
   })
 
   fastify.inject(
