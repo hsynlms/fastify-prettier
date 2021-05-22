@@ -1,12 +1,10 @@
 'use strict'
 
-// get required modules
 const fastifyPlugin = require('fastify-plugin')
 const prettier = require('prettier')
 const isStream = require('is-stream')
 const pkg = require('../package.json')
 
-// plugin defaults
 const defaults = {
   decorator: 'prettier',
   query: {
@@ -23,17 +21,13 @@ const defaults = {
   }
 }
 
-// declaration of prettier plugin for fastify
 function prettierPlugin (fastify, opts, done) {
-  // combine defaults with provided options
   const options = Object.assign({}, defaults, opts)
 
   // amazer :)
   const amazeMe = (content, opts) => {
-    // declaration of stringified content
     let strContent = ''
 
-    // validations
     if (typeof content === 'function') {
       throw Error(`${pkg.name} cannot beautify 'function' type objects`)
     } else if (typeof content === 'object' || Array.isArray(content)) {
@@ -42,14 +36,12 @@ function prettierPlugin (fastify, opts, done) {
       strContent = content.toString()
     }
 
-    // return amazed result
     return prettier.format(
       strContent,
       Object.assign({}, options.prettierOpts, opts)
     )
   }
 
-  // register the amazer as a decorator as well
   fastify.decorate(options.decorator, amazeMe)
 
   // get injected into 'onSend' hook to be able to beautify the payload
@@ -60,14 +52,11 @@ function prettierPlugin (fastify, opts, done) {
       // return the original payload
       if (isStream(payload) || Buffer.isBuffer(payload)) return payload
 
-      // new payload variable declaration
       // set current payload as fallback
       let prettifiedPayload = payload
 
-      // indicates if the body is prettified or not
       let isPrettified = false
 
-      // check options
       if (options.alwaysOn === true ||
           // eslint-disable-next-line
           (options.query && req.query[options.query.name] == options.query.value)) {
@@ -75,10 +64,8 @@ function prettierPlugin (fastify, opts, done) {
           // format the payload
           prettifiedPayload = amazeMe(prettifiedPayload)
 
-          // successfully prettified
           isPrettified = true
         } catch (err) {
-          // something bad happened
           if (options.fallbackOnError === false) {
             // throw the error if fallback is disabled
             throw Error(`${pkg.name} run into an unexpected error: ${err.message}`)
@@ -94,16 +81,13 @@ function prettierPlugin (fastify, opts, done) {
         reply.header('content-length', prettifiedPayload.length)
       }
 
-      // done, sent back the new payload
       return prettifiedPayload
     })
   }
 
-  // done
   done()
 }
 
-// export the plugin
 module.exports = fastifyPlugin(
   prettierPlugin,
   {

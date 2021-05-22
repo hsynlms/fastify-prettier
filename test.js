@@ -1,20 +1,15 @@
 'use strict'
 
-// get required node modules
 const Fastify = require('fastify')
 const fastifyPrettier = require('./src/index')
 const fs = require('fs')
 const xml2js = require('xml2js')
 
-// fastify server generator
 const generateServer = async pluginOpts => {
-  // initialize fastify server
   const fastify = new Fastify()
 
-  // register the plugin
   await fastify.register(fastifyPrettier, pluginOpts)
 
-  // return the instance
   return fastify
 }
 
@@ -22,16 +17,12 @@ const generateServer = async pluginOpts => {
 
 // eslint-disable-next-line
 test('prettify empty response', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // send response
     reply.send()
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -40,7 +31,6 @@ test('prettify empty response', async done => {
       expect(res.payload).toBe('')
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -48,16 +38,12 @@ test('prettify empty response', async done => {
 
 // eslint-disable-next-line
 test('prettify empty string response', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // send response
     reply.send('')
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -66,7 +52,6 @@ test('prettify empty string response', async done => {
       expect(res.payload).toBe('')
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -74,12 +59,9 @@ test('prettify empty string response', async done => {
 
 // eslint-disable-next-line
 test('prettify json response', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -88,11 +70,9 @@ test('prettify json response', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -103,7 +83,6 @@ test('prettify json response', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -111,18 +90,14 @@ test('prettify json response', async done => {
 
 // eslint-disable-next-line
 test('buffer response returned as it is', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // send file buffer response
     fs.readFile('test.json', (err, fileBuffer) => {
       reply.send(err || fileBuffer)
     })
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -135,7 +110,6 @@ test('buffer response returned as it is', async done => {
           expect(res2.payload).toBe(res1.payload)
           done()
 
-          // close fastify server
           fastify.close()
         }
       )
@@ -145,19 +119,13 @@ test('buffer response returned as it is', async done => {
 
 // eslint-disable-next-line
 test('stream response returned as it is', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // create test file read stream
     const stream = fs.createReadStream('test.json', 'utf8')
-
-    // send stream response
     reply.send(stream)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -170,7 +138,6 @@ test('stream response returned as it is', async done => {
           expect(res2.payload).toBe(res1.payload)
           done()
 
-          // close fastify server
           fastify.close()
         }
       )
@@ -180,7 +147,6 @@ test('stream response returned as it is', async done => {
 
 // eslint-disable-next-line
 test('prettify html response', async done => {
-  // initialize a fastify server
   const fastify = await generateServer({
     prettierOpts: {
       parser: 'html',
@@ -188,9 +154,7 @@ test('prettify html response', async done => {
     }
   })
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'html'
@@ -202,11 +166,9 @@ test('prettify html response', async done => {
     // set return type
     reply.type('text/html')
 
-    // send response
     reply.send(response)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -217,7 +179,6 @@ test('prettify html response', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -225,32 +186,25 @@ test('prettify html response', async done => {
 
 // eslint-disable-next-line
 test('prettify html response (by using decorator)', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'html'
     }
 
-    // use prettier decorator
     const response = fastify.prettier(
       (new xml2js.Builder({ headless: true, renderOpts: false })).buildObject(obj),
-      // override prettier options
       { parser: 'html', htmlWhitespaceSensitivity: 'ignore' }
     )
 
     // set return type
     reply.type('text/html')
 
-    // send response
     reply.send(response)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -261,7 +215,6 @@ test('prettify html response (by using decorator)', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -269,10 +222,8 @@ test('prettify html response (by using decorator)', async done => {
 
 // eslint-disable-next-line
 test('prettify error response', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/error?pretty=true' },
     // eslint-disable-next-line
@@ -283,7 +234,6 @@ test('prettify error response', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -291,12 +241,9 @@ test('prettify error response', async done => {
 
 // eslint-disable-next-line
 test('non-prettified response', async done => {
-  // initialize a fastify server
   const fastify = await generateServer()
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -305,11 +252,9 @@ test('non-prettified response', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -318,7 +263,6 @@ test('non-prettified response', async done => {
       expect(res.payload).toBe('{"test":true,"format":"json"}')
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -326,12 +270,9 @@ test('non-prettified response', async done => {
 
 // eslint-disable-next-line
 test('alwaysOn option of the plugin active', async done => {
-  // initialize a fastify server
   const fastify = await generateServer({ alwaysOn: true })
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -340,11 +281,9 @@ test('alwaysOn option of the plugin active', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -355,7 +294,6 @@ test('alwaysOn option of the plugin active', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -363,12 +301,9 @@ test('alwaysOn option of the plugin active', async done => {
 
 // eslint-disable-next-line
 test('alwaysOn option of the plugin passive', async done => {
-  // initialize a fastify server
   const fastify = await generateServer({ alwaysOn: false })
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -377,11 +312,9 @@ test('alwaysOn option of the plugin passive', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -392,7 +325,6 @@ test('alwaysOn option of the plugin passive', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -400,7 +332,6 @@ test('alwaysOn option of the plugin passive', async done => {
 
 // eslint-disable-next-line
 test('query option of the plugin active', async done => {
-  // initialize a fastify server
   const fastify = await generateServer(
     {
       query: {
@@ -410,9 +341,7 @@ test('query option of the plugin active', async done => {
     }
   )
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -421,11 +350,9 @@ test('query option of the plugin active', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?beautify=yes' },
     // eslint-disable-next-line
@@ -436,7 +363,6 @@ test('query option of the plugin active', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -444,14 +370,11 @@ test('query option of the plugin active', async done => {
 
 // eslint-disable-next-line
 test('query option of the plugin passive', async done => {
-  // initialize a fastify server
   const fastify = await generateServer(
     { query: false }
   )
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -460,11 +383,9 @@ test('query option of the plugin passive', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -475,7 +396,6 @@ test('query option of the plugin passive', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -483,27 +403,23 @@ test('query option of the plugin passive', async done => {
 
 // eslint-disable-next-line
 test('overrideContentLength option of the plugin active', async done => {
-  // initialize a fastify server
   const fastify = await generateServer(
     { overrideContentLength: true }
   )
 
-  // define a route
   fastify.get('/', async (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
     }
 
-    // set return type
+    // throw an error in async handler
     reply.type('application/json')
 
     // send response by throwing an error in async handler
     reply.send(obj.exception.throw())
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -518,7 +434,6 @@ test('overrideContentLength option of the plugin active', async done => {
           ).toBe(true)
           done()
 
-          // close fastify server
           fastify.close()
         }
       )
@@ -528,27 +443,23 @@ test('overrideContentLength option of the plugin active', async done => {
 
 // eslint-disable-next-line
 test('overrideContentLength option of the plugin passive', async done => {
-  // initialize a fastify server
   const fastify = await generateServer(
     { overrideContentLength: false }
   )
 
-  // define a route
   fastify.get('/', async (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
     }
 
-    // set return type
+    // throw an error in async handler
     reply.type('application/json')
 
     // send response by throwing an error in async handler
     reply.send(obj.exception.throw())
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/' },
     // eslint-disable-next-line
@@ -563,7 +474,6 @@ test('overrideContentLength option of the plugin passive', async done => {
           ).toBe(true)
           done()
 
-          // close fastify server
           fastify.close()
         }
       )
@@ -573,14 +483,11 @@ test('overrideContentLength option of the plugin passive', async done => {
 
 // eslint-disable-next-line
 test('enableOnSendHook option of the plugin active', async done => {
-  // initialize a fastify server
   const fastify = await generateServer(
     { enableOnSendHook: true }
   )
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -589,11 +496,9 @@ test('enableOnSendHook option of the plugin active', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -604,7 +509,6 @@ test('enableOnSendHook option of the plugin active', async done => {
       ).toBe(true)
       done()
 
-      // close fastify server
       fastify.close()
     }
   )
@@ -612,14 +516,11 @@ test('enableOnSendHook option of the plugin active', async done => {
 
 // eslint-disable-next-line
 test('enableOnSendHook option of the plugin passive', async done => {
-  // initialize a fastify server
   const fastify = await generateServer(
     { enableOnSendHook: false }
   )
 
-  // define a route
   fastify.get('/', (req, reply) => {
-    // variable definition
     const obj = {
       test: true,
       format: 'json'
@@ -628,11 +529,9 @@ test('enableOnSendHook option of the plugin passive', async done => {
     // set return type
     reply.type('application/json')
 
-    // send response
     reply.send(obj)
   })
 
-  // test
   fastify.inject(
     { method: 'GET', url: '/?pretty=true' },
     // eslint-disable-next-line
@@ -641,7 +540,6 @@ test('enableOnSendHook option of the plugin passive', async done => {
       expect(res.payload).toBe('{"test":true,"format":"json"}')
       done()
 
-      // close fastify server
       fastify.close()
     }
   )

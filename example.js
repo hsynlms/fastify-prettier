@@ -1,20 +1,15 @@
 'use strict'
 
-// get required node modules
 const fastify = require('fastify')()
 const fastifyPrettier = require('./src/index')
 const chalk = require('chalk')
 
-// defaults
 const defaults = { port: 3000 }
 
 ;(async () => {
-  // register the plugin
   await fastify.register(fastifyPrettier)
 
-  // register test route
   fastify.get('/', (req, reply) => {
-    // create an object
     const obj = {
       blackLivesMatter: true,
       favSinger: 'Ahmet Kaya',
@@ -29,11 +24,9 @@ const defaults = { port: 3000 }
     // set return type
     reply.type('application/json')
 
-    // return the object
     reply.send(obj)
   })
 
-  // initialize the fastify server
   fastify.listen(defaults.port, () => {
     console.log(
       chalk.bgYellow(
