@@ -91,7 +91,7 @@ function prettierPlugin (fastify, opts, done) {
 module.exports = fastifyPlugin(
   prettierPlugin,
   {
-    fastify: '3.x',
+    fastify: '4.x',
     name: pkg.name
   }
 )
