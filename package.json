@@ -6,8 +6,7 @@
   "scripts": {
     "test": "jest --verbose -i test.js -t",
     "dev": "node example.js",
-    "lint": "npm run lint:standard",
-    "lint:standard": "standard --verbose | snazzy || exit 0"
+    "lint": "standard --verbose"
   },
   "repository": {
     "type": "git",
@@ -36,7 +35,6 @@
     "chalk": "^5.0.1",
     "fastify": "^4.4.0",
     "jest": "^28.1.3",
-    "snazzy": "^9.0.0",
     "standard": "^17.0.0",
     "xml2js": "^0.4.23"
   }
